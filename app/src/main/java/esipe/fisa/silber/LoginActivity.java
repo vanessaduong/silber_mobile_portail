@@ -19,15 +19,15 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
-    @Bind(esipe.fisa.silber.R.id.input_email) EditText _emailText;
-    @Bind(esipe.fisa.silber.R.id.input_password) EditText _passwordText;
-    @Bind(esipe.fisa.silber.R.id.btn_login) Button _loginButton;
-    @Bind(esipe.fisa.silber.R.id.link_signup) TextView _signupLink;
+    @Bind(com.fisa.silber.R.id.input_email) EditText _emailText;
+    @Bind(com.fisa.silber.R.id.input_password) EditText _passwordText;
+    @Bind(com.fisa.silber.R.id.btn_login) Button _loginButton;
+    @Bind(com.fisa.silber.R.id.link_signup) TextView _signupLink;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(esipe.fisa.silber.R.layout.activity_login);
+        setContentView(com.fisa.silber.R.layout.activity_login);
         ButterKnife.bind(this);
         
         _loginButton.setOnClickListener(new View.OnClickListener() {
@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
                 startActivityForResult(intent, REQUEST_SIGNUP);
                 finish();
-                overridePendingTransition(esipe.fisa.silber.R.anim.push_left_in, esipe.fisa.silber.R.anim.push_left_out);
+                overridePendingTransition(com.fisa.silber.R.anim.push_left_in, com.fisa.silber.R.anim.push_left_out);
             }
         });
     }
@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
         _loginButton.setEnabled(false);
 
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
-                esipe.fisa.silber.R.style.AppTheme_Dark_Dialog);
+                com.fisa.silber.R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();

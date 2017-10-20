@@ -17,19 +17,19 @@ import butterknife.Bind;
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
 
-    @Bind(esipe.fisa.silber.R.id.input_name) EditText _nameText;
-    @Bind(esipe.fisa.silber.R.id.input_address) EditText _addressText;
-    @Bind(esipe.fisa.silber.R.id.input_email) EditText _emailText;
-    @Bind(esipe.fisa.silber.R.id.input_mobile) EditText _mobileText;
-    @Bind(esipe.fisa.silber.R.id.input_password) EditText _passwordText;
-    @Bind(esipe.fisa.silber.R.id.input_reEnterPassword) EditText _reEnterPasswordText;
-    @Bind(esipe.fisa.silber.R.id.btn_signup) Button _signupButton;
-    @Bind(esipe.fisa.silber.R.id.link_login) TextView _loginLink;
+    @Bind(com.fisa.silber.R.id.input_name) EditText _nameText;
+    @Bind(com.fisa.silber.R.id.input_address) EditText _addressText;
+    @Bind(com.fisa.silber.R.id.input_email) EditText _emailText;
+    @Bind(com.fisa.silber.R.id.input_mobile) EditText _mobileText;
+    @Bind(com.fisa.silber.R.id.input_password) EditText _passwordText;
+    @Bind(com.fisa.silber.R.id.input_reEnterPassword) EditText _reEnterPasswordText;
+    @Bind(com.fisa.silber.R.id.btn_signup) Button _signupButton;
+    @Bind(com.fisa.silber.R.id.link_login) TextView _loginLink;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(esipe.fisa.silber.R.layout.activity_signup);
+        setContentView(com.fisa.silber.R.layout.activity_signup);
         ButterKnife.bind(this);
 
         _signupButton.setOnClickListener(new View.OnClickListener() {
@@ -46,7 +46,7 @@ public class SignupActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
                 startActivity(intent);
                 finish();
-                overridePendingTransition(esipe.fisa.silber.R.anim.push_left_in, esipe.fisa.silber.R.anim.push_left_out);
+                overridePendingTransition(com.fisa.silber.R.anim.push_left_in, com.fisa.silber.R.anim.push_left_out);
             }
         });
     }
@@ -62,7 +62,7 @@ public class SignupActivity extends AppCompatActivity {
         _signupButton.setEnabled(false);
 
         final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
-                esipe.fisa.silber.R.style.AppTheme_Dark_Dialog);
+                com.fisa.silber.R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();

@@ -1,18 +1,18 @@
 package esipe.fisa.silber;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(esipe.fisa.silber.R.layout.activity_main);
+        setContentView(com.fisa.silber.R.layout.activity_main);
 
 
         Intent intent = new Intent(this, LoginActivity.class);
@@ -22,7 +22,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(esipe.fisa.silber.R.menu.menu_main, menu);
+        getMenuInflater().inflate(com.fisa.silber.R.menu.menu_main, menu);
         return true;
     }
 
@@ -34,7 +34,7 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == esipe.fisa.silber.R.id.action_settings) {
+        if (id == com.fisa.silber.R.id.action_settings) {
             return true;
         }
 
