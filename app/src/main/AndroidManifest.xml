@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="esipe.fisa.silber.MainActivity"
+            android:name="esipe.fisa.silber.LoginActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -16,8 +16,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="esipe.fisa.silber.LoginActivity" android:theme="@style/AppTheme.Dark" />
-        <activity android:name="esipe.fisa.silber.SignupActivity" android:theme="@style/AppTheme.Dark" />
+        <!--<activity android:name="esipe.fisa.silber.LoginActivity" android:theme="@style/AppTheme.Dark" />-->
+        <activity android:name="esipe.fisa.silber.MainActivity"/>
+        <activity android:name="esipe.fisa.silber.SignupActivity"/>
     </application>
 
 </manifest>

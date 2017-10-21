@@ -1,6 +1,19 @@
 <resources>
     <string name="app_name">B.E.M</string>
-
-    <string name="hello_world">Hello world!</string>
+    <!--String pour le toolbar -->
     <string name="action_settings">Settings</string>
+    <!-- String pour le layout activity_main -->
+    <string name="welcome">Welcome</string>
+    <!-- String pour le layout activity_login -->
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="signup">No account yet? Create one</string>
+    <!-- String pour le layout activity_signup -->
+    <string name="name">Name</string>
+    <string name="address">Address</string>
+    <string name="number">Mobile Number</string>
+    <string name="re_password">Confirm Password</string>
+    <string name="create_account">Create Account</string>
+    <string name="signin">Already a member? Login</string>
 </resources>

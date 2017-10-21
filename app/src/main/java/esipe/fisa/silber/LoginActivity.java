@@ -98,13 +98,15 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // Disable going back to the MainActivity
+        //Disable going back to the MainActivity
         moveTaskToBack(true);
     }
 
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
-        finish();
+        //Redirection to the main activity
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
     }
 
     public void onLoginFailed() {
@@ -120,14 +122,14 @@ public class LoginActivity extends AppCompatActivity {
         String password = _passwordText.getText().toString();
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            _emailText.setError("enter a valid email address");
+            _emailText.setError("Enter a valid email address");
             valid = false;
         } else {
             _emailText.setError(null);
         }
 
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            _passwordText.setError("between 4 and 10 alphanumeric characters");
+            _passwordText.setError("Between 4 and 10 alphanumeric characters");
             valid = false;
         } else {
             _passwordText.setError(null);
