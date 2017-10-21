@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">B.E.M</string>
     <!--String pour le toolbar -->
+    <string name="action_home">Home</string>
+    <string name="action_logout">Logout</string>
     <string name="action_settings">Settings</string>
     <!-- String pour le layout activity_main -->
     <string name="welcome">Welcome</string>

@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.fisa.silber.R;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -13,10 +15,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(com.fisa.silber.R.layout.activity_main);
-
-
-        //Intent intent = new Intent(this, LoginActivity.class);
-        //startActivity(intent);
     }
 
     @Override
@@ -33,11 +31,17 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == com.fisa.silber.R.id.action_settings) {
+        if(id == R.id.action_home){
             return true;
         }
-
+        else if (id == R.id.action_logout){
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        else if (id == com.fisa.silber.R.id.action_settings) {
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 }
