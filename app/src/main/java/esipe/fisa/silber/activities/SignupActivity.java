@@ -1,4 +1,4 @@
-package esipe.fisa.silber;
+package esipe.fisa.silber.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
