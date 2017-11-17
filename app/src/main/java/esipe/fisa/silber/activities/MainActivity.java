@@ -2,19 +2,30 @@ package esipe.fisa.silber.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.fisa.silber.R;
 
+import esipe.fisa.silber.listeners.OnNavigationItemSelectedListener;
+
 
 public class MainActivity extends AppCompatActivity {
+
+    private OnNavigationItemSelectedListener mOnNavigationItemSelectedListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(com.fisa.silber.R.layout.activity_main);
+
+        OnNavigationItemSelectedListener.setContext(this);
+        this.mOnNavigationItemSelectedListener = new OnNavigationItemSelectedListener();
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
     @Override
@@ -26,9 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         if(id == R.id.action_home){
