@@ -16,7 +16,6 @@ import java.io.IOException;
 import butterknife.ButterKnife;
 import butterknife.Bind;
 import esipe.fisa.silber.listeners.OnNavigationItemSelectedListener;
-import esipe.fisa.silber.services.BankStatementService;
 
 import static esipe.fisa.silber.validators.InputValidator.validateEmail;
 import static esipe.fisa.silber.validators.InputValidator.validatePassword;

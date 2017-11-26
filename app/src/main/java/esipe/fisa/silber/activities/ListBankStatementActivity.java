@@ -17,7 +17,6 @@ import com.fisa.silber.R;
 
 import java.io.IOException;
 import java.util.List;
-/Users/zouhairhajji/Documents/netbeansprojects/ing3-sem1/android/silber_mobile_portail/app/src/main/java/esipe/fisa/silber/activities/LoginActivity.java
 import esipe.fisa.silber.beans.BankStatement;
 import esipe.fisa.silber.listeners.OnNavigationItemSelectedListener;
 import esipe.fisa.silber.restInterfaces.RetBankStatement;
