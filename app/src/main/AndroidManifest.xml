@@ -23,7 +23,7 @@
         <!-- <activity android:name="esipe.fisa.silber.activities.LoginActivity" android:theme="@style/AppTheme.Dark" /> -->
         <activity android:name="esipe.fisa.silber.activities.MainActivity" />
         <activity android:name="esipe.fisa.silber.activities.SignupActivity" />
-        <activity android:name="esipe.fisa.silber.activities.ListBankStatementActivity"></activity>
+        <activity android:name="esipe.fisa.silber.activities.ListBankStatementActivity" />
     </application>
 
 </manifest>
