@@ -43,4 +43,38 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
+
+    //Runner
+    androidTestCompile( 'com.android.support.test:runner:0.4.1' ){
+        exclude module: 'junit'
+    }
+    //Cucumber
+    androidTestCompile('info.cukes:cucumber-junit:1.1.4') {
+        exclude module: 'cucumber-jvm-deps'
+        exclude module: 'cucumber-core'
+        exclude group: 'org.hamcrest', module: 'hamcrest-core'
+    }
+    androidTestCompile('info.cukes:cucumber-android:1.2.4@jar') {
+        exclude module: 'cucumber-jvm-deps'
+    }
+    androidTestCompile('info.cukes:cucumber-picocontainer:1.2.4') {
+        exclude module: 'cucumber-core'
+        exclude module: 'cucumber-jvm-deps'
+    }
+    androidTestCompile('info.cukes:cucumber-jvm:1.2.4') {
+    }
+    androidTestCompile('info.cukes:cucumber-core:1.2.4') {
+        exclude module: 'cucumber-jvm-deps'
+    }
+    androidTestCompile('info.cukes:cucumber-jvm-deps:1.0.3') {
+    }
+    //Espresso
+    androidTestCompile( 'com.android.support.test.espresso:espresso-core:2.2.1' ){
+        exclude module: 'junit'
+        exclude module: 'runner'
+    }
+    androidTestCompile( 'com.android.support.test.espresso:espresso-contrib:2.2.1' ){
+        exclude module: 'espresso-core'
+        exclude module: 'support-v4'
+    }
 }
