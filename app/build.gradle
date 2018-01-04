@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.1'
+    buildToolsVersion '26.0.2'
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
@@ -22,6 +22,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.android.support:support-v4:25.4.0'
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -45,7 +46,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     //Runner
-    androidTestCompile( 'com.android.support.test:runner:0.4.1' ){
+    androidTestCompile('com.android.support.test:runner:0.4.1') {
         exclude module: 'junit'
     }
     //Cucumber
@@ -69,11 +70,11 @@ dependencies {
     androidTestCompile('info.cukes:cucumber-jvm-deps:1.0.3') {
     }
     //Espresso
-    androidTestCompile( 'com.android.support.test.espresso:espresso-core:2.2.1' ){
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.1') {
         exclude module: 'junit'
         exclude module: 'runner'
     }
-    androidTestCompile( 'com.android.support.test.espresso:espresso-contrib:2.2.1' ){
+    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.1') {
         exclude module: 'espresso-core'
         exclude module: 'support-v4'
     }
