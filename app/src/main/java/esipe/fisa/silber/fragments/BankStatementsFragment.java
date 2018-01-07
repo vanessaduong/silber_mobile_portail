@@ -1,14 +1,32 @@
 package esipe.fisa.silber.fragments;
 
+import android.app.DownloadManager;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fisa.silber.R;
+
+import java.util.List;
+
+import esipe.fisa.silber.beans.BankStatement;
+import esipe.fisa.silber.listeners.OnNavigationItemSelectedListener;
+import esipe.fisa.silber.restInterfaces.RetBankStatement;
+import esipe.fisa.silber.utils.APIClient;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,8 +46,12 @@ public class BankStatementsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
-
+    public static final String TAG = "LBankStateFragment";
+    private OnNavigationItemSelectedListener mOnNavigationItemSelectedListener;
+    private RetBankStatement bankStatement;
+    private List<BankStatement> bankStatements;
+    private ListView mListView;
+    private TextView emptyTextView, titleTextView;
     public BankStatementsFragment() {
         // Required empty public constructor
     }
@@ -59,19 +81,76 @@ public class BankStatementsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        //OnNavigationItemSelectedListener.setContext(getActivity().contex);
+        //BottomNavigationView navigation = (BottomNavigationView) getView().findViewById(R.id.navigation);
+        //navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        Log.d(TAG, "onCreate");
+
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView started");
+
+        View v = inflater.inflate(R.layout.fragment_bank_statements, container, false);
+        this.mOnNavigationItemSelectedListener = new OnNavigationItemSelectedListener();
+        mListView = (ListView) v.findViewById(R.id.myBankStatementList);
+        emptyTextView = (TextView) v.findViewById(R.id.list_empty);
+        titleTextView = (TextView) v.findViewById(R.id.myBankStatementTitle);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+                BankStatement bs = bankStatements.get(position);
+                Call<ResponseBody> url = bankStatement.getPDFFormat(4);
+                DownloadManager downloadManager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
+                Uri uri = Uri.parse(url.request().url().toString());
+                downloadManager.enqueue(new DownloadManager.Request(uri)
+                        .setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE)
+                        .setAllowedOverRoaming(false)
+                        .setTitle("Bank Statement")
+                        .setDescription(bs.toString()));
+            }
+        });
+
+        this.bankStatement = APIClient.getClient().create(RetBankStatement.class);
+        bankStatement.getAllBankStatements().enqueue(new Callback<List<BankStatement>>() {
+            @Override
+            public void onResponse(Call<List<BankStatement>> call, Response<List<BankStatement>> response) {
+                if(response.isSuccessful()){
+                    bankStatements = response.body();
+                    ArrayAdapter<BankStatement> adapter = new ArrayAdapter<BankStatement>(container.getContext(), android.R.layout.simple_list_item_1, bankStatements);
+                    if (adapter.getCount() == 0){
+                        mListView.setVisibility(View.INVISIBLE);
+                        emptyTextView.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        mListView.setAdapter(adapter);
+                        mListView.setVisibility(View.VISIBLE);
+                        emptyTextView.setVisibility(View.INVISIBLE);
+                    }
+                }
+                else
+                    emptyTextView.setVisibility(View.VISIBLE);
+
+            }
+
+            @Override
+            public void onFailure(Call<List<BankStatement>> call, Throwable t) {
+                Toast.makeText(container.getContext(), "Cannot get data from server", Toast.LENGTH_LONG);
+            }
+        });
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_bank_statements, container, false);
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+        if (mOnNavigationItemSelectedListener != null) {
+            //mListener.onFragmentInteraction(uri);
+
         }
     }
 
@@ -79,7 +158,7 @@ public class BankStatementsFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+            mOnNavigationItemSelectedListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -89,7 +168,7 @@ public class BankStatementsFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        mOnNavigationItemSelectedListener = null;
     }
 
     /**

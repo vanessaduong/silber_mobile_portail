@@ -46,8 +46,13 @@
     <string name="openDrawer">open_drawer</string>
     <string name="closeDrawer">close_drawer</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home_title"><b>Silber group</b></string>
+    <string name="list_bank_statement_title"><b>My bank statements</b></string>
+    <string name="no_document">No document available</string>
+    <string name="list_functions_home">Welcome to your new banking application.\nIn this application you can find all functions as follow:\n
+        \t• Log on around the world\n
+        \t• View and download your bank statement\n
+    </string>
 
 
 </resources>
