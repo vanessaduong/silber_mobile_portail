@@ -1,5 +1,7 @@
 package esipe.fisa.silber.beans;
 
+import android.text.format.DateFormat;
+
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -59,6 +61,11 @@ public class BankStatement {
 
     @Override
     public String toString() {
-        return "Releve bancaire : " + new Date(getGenerationDate());
+        Date genDate = new Date(getGenerationDate());
+        String monthNumber  = (String) DateFormat.format("MM",   genDate);
+        String year         = (String) DateFormat.format("yyyy", genDate);
+        String accType = getAccountType();
+        String title = accType + "-" + monthNumber + "/" + year;
+        return title;
     }
 }

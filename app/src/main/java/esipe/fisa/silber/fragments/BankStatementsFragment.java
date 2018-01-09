@@ -7,11 +7,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -95,12 +97,54 @@ public class BankStatementsFragment extends Fragment {
                              Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView started");
 
-        View v = inflater.inflate(R.layout.fragment_bank_statements, container, false);
+        final View v = inflater.inflate(R.layout.fragment_bank_statements, container, false);
         this.mOnNavigationItemSelectedListener = new OnNavigationItemSelectedListener();
         mListView = (ListView) v.findViewById(R.id.myBankStatementList);
         emptyTextView = (TextView) v.findViewById(R.id.list_empty);
         titleTextView = (TextView) v.findViewById(R.id.myBankStatementTitle);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
+                PopupMenu popup = new PopupMenu(container.getContext(), v);
+                popup.getMenuInflater().inflate(R.menu.document_item_menu,
+                        popup.getMenu());
+                popup.show();
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        switch (item.getItemId()) {
+                            case R.id.viewDoc:
+
+                                //Or Some other code you want to put here.. This is just an example.
+                                Toast.makeText(container.getContext(), " View doc clicked at position " + " : " + i, Toast.LENGTH_LONG).show();
+
+                                break;
+                            case R.id.download:
+                                BankStatement bs = bankStatements.get(i);
+                                Call<ResponseBody> url = bankStatement.getPDFFormat(4);
+                                DownloadManager downloadManager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
+                                Uri uri = Uri.parse(url.request().url().toString());
+                                downloadManager.enqueue(new DownloadManager.Request(uri)
+                                        .setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE)
+                                        .setAllowedOverRoaming(false)
+                                        .setTitle("Bank Statement")
+                                        .setDescription(bs.toString()));
+                                Toast.makeText(container.getContext(), " Download clicked at position " + " : " + i, Toast.LENGTH_LONG).show();
+
+                                break;
+
+                            default:
+                                break;
+                        }
+
+                        return true;
+                    }
+                });
+
+            }
+        });
+        /**mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
                 BankStatement bs = bankStatements.get(position);
@@ -113,7 +157,7 @@ public class BankStatementsFragment extends Fragment {
                         .setTitle("Bank Statement")
                         .setDescription(bs.toString()));
             }
-        });
+        });**/
 
         this.bankStatement = APIClient.getClient().create(RetBankStatement.class);
         bankStatement.getAllBankStatements().enqueue(new Callback<List<BankStatement>>() {
@@ -121,7 +165,7 @@ public class BankStatementsFragment extends Fragment {
             public void onResponse(Call<List<BankStatement>> call, Response<List<BankStatement>> response) {
                 if(response.isSuccessful()){
                     bankStatements = response.body();
-                    ArrayAdapter<BankStatement> adapter = new ArrayAdapter<BankStatement>(container.getContext(), android.R.layout.simple_list_item_1, bankStatements);
+                    ArrayAdapter<BankStatement> adapter = new ArrayAdapter<BankStatement>(container.getContext(), android.R.layout.simple_expandable_list_item_1, bankStatements);
                     if (adapter.getCount() == 0){
                         mListView.setVisibility(View.INVISIBLE);
                         emptyTextView.setVisibility(View.VISIBLE);

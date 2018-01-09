@@ -24,6 +24,7 @@
             android:id="@+id/myBankStatementList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            tools:listitem="@layout/document_list_item"
             android:tag="listBankStat" />
 
         <TextView
