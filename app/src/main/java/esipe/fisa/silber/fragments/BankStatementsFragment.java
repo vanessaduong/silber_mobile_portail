@@ -117,7 +117,7 @@ public class BankStatementsFragment extends Fragment {
                             case R.id.viewDoc:
 
                                 //Or Some other code you want to put here.. This is just an example.
-                                Toast.makeText(container.getContext(), " View doc clicked at position " + " : " + i, Toast.LENGTH_LONG).show();
+                                Toast.makeText(container.getContext(), " View doc cb licked at position " + " : " + i, Toast.LENGTH_LONG).show();
 
                                 break;
                             case R.id.download:
