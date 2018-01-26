@@ -1,6 +1,7 @@
 package esipe.fisa.silber.fragments;
 
 import android.app.DownloadManager;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.net.Uri;
@@ -116,9 +117,12 @@ public class BankStatementsFragment extends Fragment {
                         switch (item.getItemId()) {
                             case R.id.viewDoc:
 
-                                //Or Some other code you want to put here.. This is just an example.
                                 Toast.makeText(container.getContext(), " View doc cb licked at position " + " : " + i, Toast.LENGTH_LONG).show();
-
+                                Call<ResponseBody> view_url = bankStatement.getPDFFormat(4);
+                                Uri view_uri = Uri.parse(view_url.request().url().toString());
+                                Intent intent = new Intent(Intent.ACTION_VIEW);
+                                intent.setDataAndType(view_uri, "text/html");
+                                startActivity(intent);
                                 break;
                             case R.id.download:
                                 BankStatement bs = bankStatements.get(i);
