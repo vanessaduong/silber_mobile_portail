@@ -19,11 +19,14 @@ public class BankStatement {
 
     private String accountType;
 
-    public BankStatement(String path, Long generationDate, int idAccount, String accountType) {
+    private int idBankStatement;
+
+    public BankStatement(String path, Long generationDate, int idAccount, String accountType, int idBankStatement) {
         this.path = path;
         this.generationDate = generationDate;
         this.idAccount = idAccount;
         this.accountType = accountType;
+        this.idBankStatement = idBankStatement;
     }
 
 
@@ -57,6 +60,14 @@ public class BankStatement {
 
     public void setAccountType(String accountType) {
         this.accountType = accountType;
+    }
+
+    public int getIdBankStatement() {
+        return idBankStatement;
+    }
+
+    public void setIdBankStatement(int idBankStatement) {
+        this.idBankStatement = idBankStatement;
     }
 
     @Override

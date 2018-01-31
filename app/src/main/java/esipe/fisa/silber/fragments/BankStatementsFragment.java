@@ -113,20 +113,19 @@ public class BankStatementsFragment extends Fragment {
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-
+                        BankStatement bs = bankStatements.get(i);
                         switch (item.getItemId()) {
                             case R.id.viewDoc:
 
                                 Toast.makeText(container.getContext(), " View doc cb licked at position " + " : " + i, Toast.LENGTH_LONG).show();
-                                Call<ResponseBody> view_url = bankStatement.getPDFFormat(4);
+                                Call<ResponseBody> view_url = bankStatement.getPDFFormat(bs.getIdBankStatement());
                                 Uri view_uri = Uri.parse(view_url.request().url().toString());
                                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                                intent.setDataAndType(view_uri, "text/html");
+                                intent.setDataAndType(view_uri, "application/pdf");
                                 startActivity(intent);
                                 break;
                             case R.id.download:
-                                BankStatement bs = bankStatements.get(i);
-                                Call<ResponseBody> url = bankStatement.getPDFFormat(4);
+                                Call<ResponseBody> url = bankStatement.getPDFFormat(bs.getIdBankStatement());
                                 DownloadManager downloadManager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
                                 Uri uri = Uri.parse(url.request().url().toString());
                                 downloadManager.enqueue(new DownloadManager.Request(uri)
