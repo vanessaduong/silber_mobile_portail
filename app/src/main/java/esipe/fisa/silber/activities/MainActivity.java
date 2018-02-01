@@ -104,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
                                 .setContentText("Your new bankstatement is available.")
                                 .setContentIntent(pIntent);
 
+                mBuilder.setAutoCancel(true);
+
                 NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.notify(101, mBuilder.build());
             }
