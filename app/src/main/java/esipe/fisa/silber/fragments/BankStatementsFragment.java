@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,6 +56,7 @@ public class BankStatementsFragment extends Fragment {
     private List<BankStatement> bankStatements;
     private ListView mListView;
     private TextView emptyTextView, titleTextView;
+    private ProgressBar loadingProgressBar;
     public BankStatementsFragment() {
         // Required empty public constructor
     }
@@ -103,6 +105,10 @@ public class BankStatementsFragment extends Fragment {
         mListView = (ListView) v.findViewById(R.id.myBankStatementList);
         emptyTextView = (TextView) v.findViewById(R.id.list_empty);
         titleTextView = (TextView) v.findViewById(R.id.myBankStatementTitle);
+
+        //Loading progress bar
+        loadingProgressBar = (ProgressBar) v.findViewById(R.id.bankStatementLoadingProgressBar);
+
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
@@ -147,20 +153,6 @@ public class BankStatementsFragment extends Fragment {
 
             }
         });
-        /**mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
-                BankStatement bs = bankStatements.get(position);
-                Call<ResponseBody> url = bankStatement.getPDFFormat(4);
-                DownloadManager downloadManager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
-                Uri uri = Uri.parse(url.request().url().toString());
-                downloadManager.enqueue(new DownloadManager.Request(uri)
-                        .setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE)
-                        .setAllowedOverRoaming(false)
-                        .setTitle("Bank Statement")
-                        .setDescription(bs.toString()));
-            }
-        });**/
 
         this.bankStatement = APIClient.getClient().create(RetBankStatement.class);
         bankStatement.getAllBankStatements().enqueue(new Callback<List<BankStatement>>() {
@@ -171,16 +163,19 @@ public class BankStatementsFragment extends Fragment {
                     ArrayAdapter<BankStatement> adapter = new ArrayAdapter<BankStatement>(container.getContext(), android.R.layout.simple_expandable_list_item_1, bankStatements);
                     if (adapter.getCount() == 0){
                         mListView.setVisibility(View.INVISIBLE);
-                        emptyTextView.setVisibility(View.VISIBLE);
+                        loadingProgressBar.setVisibility(View.VISIBLE);
                     }
                     else{
                         mListView.setAdapter(adapter);
                         mListView.setVisibility(View.VISIBLE);
-                        emptyTextView.setVisibility(View.INVISIBLE);
+                        loadingProgressBar.setVisibility(View.INVISIBLE);
                     }
                 }
-                else
-                    emptyTextView.setVisibility(View.VISIBLE);
+                else{
+                    loadingProgressBar.setVisibility(View.VISIBLE);
+                    //emptyTextView.setVisibility(View.VISIBLE);
+                }
+
 
             }
 

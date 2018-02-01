@@ -27,11 +27,20 @@
             tools:listitem="@layout/document_list_item"
             android:tag="listBankStat" />
 
+        <ProgressBar
+            android:id="@+id/bankStatementLoadingProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:theme="@style/AppTheme.PrimaryAccent"
+            android:layout_gravity="center"/>
+
         <TextView
             android:id="@+id/list_empty"
             android:text="@string/no_document"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
             android:layout_gravity="center"/>
 
     </LinearLayout>
