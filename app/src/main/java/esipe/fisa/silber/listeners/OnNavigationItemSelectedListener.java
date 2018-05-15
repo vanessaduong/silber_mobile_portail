@@ -25,7 +25,7 @@ public class OnNavigationItemSelectedListener implements BottomNavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if(currentactivity == null){
+        /**if(currentactivity == null){
             Log.d(TAG, "onNavigationItemSelected: not application context was detected");
             return false;
         }
@@ -40,7 +40,7 @@ public class OnNavigationItemSelectedListener implements BottomNavigationView.On
                 }
                 return true;
         }
-        Log.d(TAG, "onNavigationItemSelected: selected an item");
+        Log.d(TAG, "onNavigationItemSelected: selected an item");**/
         return false;
     }
 

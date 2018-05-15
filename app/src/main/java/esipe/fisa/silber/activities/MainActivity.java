@@ -31,6 +31,7 @@ import com.fisa.silber.R;
 import esipe.fisa.silber.beans.BankStatement;
 import esipe.fisa.silber.fragments.BankStatementsFragment;
 import esipe.fisa.silber.fragments.HomeFragment;
+import esipe.fisa.silber.fragments.PaymentFragment;
 import esipe.fisa.silber.listeners.OnNavigationItemSelectedListener;
 
 
@@ -51,8 +52,7 @@ public class MainActivity extends AppCompatActivity {
     // tags used to attach the fragments
     private static final String TAG_HOME = "home";
     private static final String TAG_BANKSTATEMENTS = "bank statements";
-    private static final String TAG_NOTIFICATIONS = "notifications";
-    private static final String TAG_SETTINGS = "settings";
+    private static final String TAG_PAYMENT = "payment";
     public static String CURRENT_TAG = TAG_HOME;
 
     // toolbar titles respected to selected nav menu item
@@ -210,12 +210,8 @@ public class MainActivity extends AppCompatActivity {
                 return bankStatementFragment;
             case 2:
                 // notifications fragment
-                HomeFragment notificationsFragment = new HomeFragment();
-                return notificationsFragment;
-            case 3:
-                // settings fragment
-                HomeFragment settingsFragment = new HomeFragment();
-                return settingsFragment;
+                PaymentFragment paymentFragment = new PaymentFragment();
+                return paymentFragment;
             default:
                 return new HomeFragment();
         }
@@ -248,13 +244,9 @@ public class MainActivity extends AppCompatActivity {
                         navItemIndex = 1;
                         CURRENT_TAG = TAG_BANKSTATEMENTS;
                         break;
-                    case R.id.nav_settings:
+                    case R.id.nav_payment:
                         navItemIndex = 2;
-                        CURRENT_TAG = TAG_SETTINGS;
-                        break;
-                    case R.id.nav_notifications:
-                        navItemIndex = 3;
-                        CURRENT_TAG = TAG_NOTIFICATIONS;
+                        CURRENT_TAG = TAG_PAYMENT;
                         break;
                     case R.id.nav_about_us:
                         // launch new intent instead of loading fragment
