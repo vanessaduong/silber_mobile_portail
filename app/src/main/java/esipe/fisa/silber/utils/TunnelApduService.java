@@ -8,6 +8,8 @@ import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.Arrays;
 
 public class TunnelApduService extends HostApduService {
@@ -37,14 +39,16 @@ public class TunnelApduService extends HostApduService {
     // OK status sent in response to SELECT AID command
     private static final byte[] MY_UID = {(byte) 0x90, (byte) 0x00};
 
+    //private static final byte[] MY_ACCOUNT = {(byte) 0x01, (byte) 0x62, (byte) 0x69, (byte) 0X70};
+
     // Error code
     private static final byte[] MY_ERROR = {0x6F, 0x00};
 
     // OK Confirmation
-    private static final byte[] OK_CONFIRMATION = {0x00, (byte) 0xA4, 0x00, (byte) 0x0C, 0x02, (byte) 0xE1, 0x03};
+    private static final byte RECEIVE_VALUE = (byte)0x01;
 
     // NOK Confirmation
-    private static final byte[] NOK_CONFIRMATION = {0x00, (byte) 0xB0, 0x00, 0x00, (byte) 0x0F};
+    private static final byte[] NOK_CONFIRMATION = {0x02};
 
 
     @Override
@@ -52,9 +56,14 @@ public class TunnelApduService extends HostApduService {
         super.onCreate();
     }
 
-    private byte[] getUrlBytes() {
+    private byte[] getAccountBytes() {
         try {
-            return TunnelSettings.getUrl(this).getBytes("ASCII");
+            byte[] header = {(byte) 0x01};
+            byte[] acc = TunnelSettings.getAccount(this).getBytes("ASCII");
+            byte[] accToSend = new byte[header.length + acc.length];
+            System.arraycopy(header, 0, accToSend, 0, header.length);
+            System.arraycopy(acc, 0, accToSend, header.length, acc.length);
+            return accToSend;
         } catch (UnsupportedEncodingException e) {
             throw new IllegalStateException(e); // never happens
         }
@@ -65,14 +74,27 @@ public class TunnelApduService extends HostApduService {
 
         if (Arrays.equals(SELECT_AID_COMMAND, commandApdu))
         {
-            Log.d(TAG, "Received and return: " + commandApdu);
+            Log.d(TAG, "Application selected");
             return MY_UID;
-        } else if (Arrays.equals(OK_CONFIRMATION, commandApdu)) {
-            notifyPaymentAccepted();
-            return MY_UID;
-        } else if (Arrays.equals(NOK_CONFIRMATION, commandApdu)) {
-            notifyPaymentRefused();
-            return MY_UID;
+        } else if (commandApdu[0] == RECEIVE_VALUE) {
+            byte[] value = new byte[commandApdu.length-1];
+            System.arraycopy(commandApdu,1,value,0,commandApdu.length-1);
+            String s = "";
+            try {
+                s = new String(value, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            Float f = Float.parseFloat(s);
+            if (f <= 100 && f>0){
+                notifyPaymentAccepted(s);
+                byte[] MY_ACCOUNT = getAccountBytes();
+                return MY_ACCOUNT;
+            }
+            else{
+                notifyPaymentRefused();
+                return NOK_CONFIRMATION;
+            }
         }
 
 
@@ -86,8 +108,9 @@ public class TunnelApduService extends HostApduService {
         notifyLinkDeactivated(reason);
     }
 
-    private void notifyPaymentAccepted() {
+    private void notifyPaymentAccepted(String value) {
         Intent intent = new Intent(BROADCAST_INTENT_PAYMENT_OK);
+        intent.putExtra("value", value);
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
     }
 

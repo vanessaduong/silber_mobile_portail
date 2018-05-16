@@ -180,7 +180,8 @@ public class PaymentFragment extends Fragment {
     private BroadcastReceiver paymentAcceptedConfirmation = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            paymentConfirmation.setText("Payment accepted!");
+            final String value = intent.getStringExtra("value");
+            paymentConfirmation.setText("Payment " + value + " accepted!");
             paymentConfirmation.setVisibility(View.VISIBLE);
 
         }
