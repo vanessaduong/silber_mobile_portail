@@ -36,6 +36,7 @@ import esipe.fisa.silber.listeners.OnNavigationItemSelectedListener;
 import esipe.fisa.silber.restInterfaces.RetBankStatement;
 import esipe.fisa.silber.utils.APIClient;
 import esipe.fisa.silber.utils.TunnelApduService;
+import esipe.fisa.silber.utils.TunnelSettings;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -131,23 +132,20 @@ public class PaymentFragment extends Fragment {
 
         checkForNFC();
 
-        lbm.registerReceiver(dataReceivedReceiver, new IntentFilter(TunnelApduService.BROADCAST_INTENT_DATA_RECEIVED));
-        lbm.registerReceiver(requestSentReceiver, new IntentFilter(TunnelApduService.BROADCAST_INTENT_REQUEST_SENT));
+        lbm.registerReceiver(paymentAcceptedConfirmation, new IntentFilter(TunnelApduService.BROADCAST_INTENT_PAYMENT_OK));
+        lbm.registerReceiver(paymentRefusedConfirmation, new IntentFilter(TunnelApduService.BROADCAST_INTENT_PAYMENT_NOK));
         lbm.registerReceiver(linkDeactivatedReceiver, new IntentFilter(TunnelApduService.BROADCAST_INTENT_LINK_DEACTIVATED));
-
-        //statusLabel.setText(R.string.tunnel_status_ready);
     }
 
-    /**@Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mOnNavigationItemSelectedListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }**/
+    @Override
+    public void onPause() {
+        lbm.unregisterReceiver(paymentAcceptedConfirmation);
+        lbm.unregisterReceiver(paymentRefusedConfirmation);
+        lbm.unregisterReceiver(linkDeactivatedReceiver);
+
+        super.onPause();
+    }
+
 
     @Override
     public void onDetach() {
@@ -179,30 +177,19 @@ public class PaymentFragment extends Fragment {
         }
     }
 
-    private BroadcastReceiver requestSentReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver paymentAcceptedConfirmation = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            // record start time for rate calculation
-            requestStartTimeMillis = System.currentTimeMillis();
+            paymentConfirmation.setText("Payment accepted!");
+            paymentConfirmation.setVisibility(View.VISIBLE);
+
         }
     };
 
-    private BroadcastReceiver dataReceivedReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver paymentRefusedConfirmation = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            dataReceived = true;
-            final byte[] data = intent.getByteArrayExtra("data");
-            String s = null;
-            try {
-                s = new String(data, "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            if(s == "OK")
-                paymentConfirmation.setText("Payment accepted!");
-            else
-                paymentConfirmation.setText("Payment refused!");
-
+            paymentConfirmation.setText("Payment refused!");
             paymentConfirmation.setVisibility(View.VISIBLE);
 
         }
@@ -211,6 +198,7 @@ public class PaymentFragment extends Fragment {
     private BroadcastReceiver linkDeactivatedReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            //paymentConfirmation.setText("Payment error.");
         }
     };
 }
