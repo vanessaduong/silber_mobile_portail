@@ -20,6 +20,23 @@
             android:gravity="center"
             android:textSize="24dip"/>
 
+        <ImageView
+            android:id="@+id/paymentOK"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:gravity="center"
+            android:visibility="invisible"
+            android:src="@drawable/ok" />
+
+        <ImageView
+            android:id="@+id/paymentNOK"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:visibility="invisible"
+            android:src="@drawable/nok" />
+
         <TextView
             android:id="@+id/paymentConfirmation"
             android:text=""
@@ -28,7 +45,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_gravity="center_vertical"
-            android:textSize="16dip"/>
+            android:textSize="32dip"/>
 
     </LinearLayout>
 </FrameLayout>

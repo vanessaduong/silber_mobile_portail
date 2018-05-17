@@ -6,9 +6,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
@@ -20,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
@@ -64,6 +67,7 @@ public class PaymentFragment extends Fragment {
     private OnNavigationItemSelectedListener mOnNavigationItemSelectedListener;
     private RetBankStatement bankStatement;
     private TextView paymentTitle, paymentConfirmation;
+    private ImageView ok, nok;
     private LocalBroadcastManager lbm;
     private boolean dataReceived;
     private long requestStartTimeMillis;
@@ -112,6 +116,8 @@ public class PaymentFragment extends Fragment {
         this.mOnNavigationItemSelectedListener = new OnNavigationItemSelectedListener();
         paymentTitle = (TextView) v.findViewById(R.id.paymentTitle);
         paymentConfirmation = (TextView) v.findViewById(R.id.paymentConfirmation);
+        ok = (ImageView) v.findViewById(R.id.paymentOK);
+        nok = (ImageView) v.findViewById(R.id.paymentNOK);
         lbm = LocalBroadcastManager.getInstance(this.getContext());
 
         // Inflate the layout for this fragment
@@ -182,8 +188,16 @@ public class PaymentFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             final String value = intent.getStringExtra("value");
             paymentConfirmation.setText("Payment " + value + " accepted!");
+            paymentConfirmation.setTextColor(Color.parseColor("#70C656"));
+            nok.setVisibility(View.INVISIBLE);
+            ok.setVisibility(View.VISIBLE);
             paymentConfirmation.setVisibility(View.VISIBLE);
+            paymentTitle.setVisibility(View.INVISIBLE);
+            // Get instance of Vibrator from current Context
+            Vibrator v = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
 
+            // Vibrate for 200 milliseconds
+            v.vibrate(200);
         }
     };
 
@@ -191,7 +205,16 @@ public class PaymentFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             paymentConfirmation.setText("Payment refused!");
+            paymentConfirmation.setTextColor(Color.parseColor("#ff0000"));
+            ok.setVisibility(View.INVISIBLE);
+            nok.setVisibility(View.VISIBLE);
             paymentConfirmation.setVisibility(View.VISIBLE);
+            paymentTitle.setVisibility(View.INVISIBLE);
+            // Get instance of Vibrator from current Context
+            Vibrator v = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+
+            // Vibrate for 200 milliseconds
+            v.vibrate(200);
 
         }
     };
